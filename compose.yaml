@@ -1,0 +1,7 @@
+﻿services:
+  fastuptime:
+    image: fastuptime
+    build:
+      context: .
+      dockerfile: Dockerfile
+

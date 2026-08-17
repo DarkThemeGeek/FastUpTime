@@ -1,0 +1,6 @@
+@FastUpTime_HostAddress = http://localhost:5198
+
+GET {{FastUpTime_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

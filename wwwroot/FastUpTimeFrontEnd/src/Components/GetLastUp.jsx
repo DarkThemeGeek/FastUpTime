@@ -30,7 +30,8 @@ function GetLastUp(props) {
     //getting the component
     return (
         <div>
-            {sites.map(site => (
+            Hello world
+            {sites.map(site => ( 
                 <div key={site.id}>{site.url}</div>
             ))}
         </div>

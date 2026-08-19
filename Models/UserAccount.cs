@@ -10,9 +10,9 @@ public class UserAccount
     [Key] 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("string")]
-    public int Id { set; get; }
+    public required int Id { set; get; }
     [Column("user_name")]
-    public string? UserName { set; get; }
+    public required string UserName { set; get; }
     [Column("password")]
-    public string? Password { set; get; }
+    public required string Password { set; get; }
 }

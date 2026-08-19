@@ -6,7 +6,7 @@ namespace FastUpTime.Data;
 public class UserDbContext : DbContext
 {
     
-    public AppDbContext(DbContextOptions options) : base(options)
+    public UserDbContext(DbContextOptions options) : base(options)
     {
     }
 

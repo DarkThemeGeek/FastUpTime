@@ -1,6 +1,7 @@
 namespace FastUpTime.Models;
 
-public class Site
+public struct Site
 {
-    
+    public long Id { get; set; }
+    public string Url { get; set; }
 }

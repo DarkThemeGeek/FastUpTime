@@ -8,7 +8,11 @@ import axios from "axios";
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
+const REGISTER_URL = "https://localhost:8443/acc/auth/register";
+
+
 function Register() {
+   
     const userRef = useRef();
     const errRef = useRef();
 
@@ -28,24 +32,20 @@ function Register() {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    const REGISTER_URL = "https://localhost:8443/acc";
+    
     useEffect(() => {
         userRef.current.focus();
     }, [])
     //validating username
     useEffect(() => {
         const result = USER_REGEX.test(user);
-        console.log(result);
-        console.log(user);
         setValidName(result);
 
     }, [user]);
     //validating pwd
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
-
-        console.log(result);
-        console.log(pwd);
+        
         setValidPwd(result);
 
         const match = pwd === matchPwd
@@ -69,19 +69,19 @@ function Register() {
 
         try {
             const response = await axios.post(REGISTER_URL, {
-                body: JSON.stringify({userName: user, password: pwd})
-
+                UserName: user, Password: pwd
+                
             });
             console.log(JSON.stringify(response));
             setSuccess(true);
             //clear input fields
         } catch (err) {
             if(!err?.response){
-                setErrMsg('No Server Response');
+                setErrMsg('No Server Response'+err?.respose.data);
             }else if(err.response?.status === 409){
-                setErrMsg('UserName Taken');
+                setErrMsg('UserName Taken'+err?.respose.data);
             }else{
-                setErrMsg('Registration Failed');
+                setErrMsg('Registration Failed'+err?.respose.data);
             }
             errRef.current.focus();
         }
@@ -89,6 +89,7 @@ function Register() {
 
     }
     return (
+        
         <>
             {success ? (
                 <section>
@@ -198,7 +199,6 @@ function Register() {
                     <p>
                         Already registered?<br/>
                         <span className={"line"}>
-                    {/*React router link here*/}
                             <a href="#">Sign in</a>
                 </span>
                     </p>

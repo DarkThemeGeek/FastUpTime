@@ -14,7 +14,7 @@ html {
 
 body {
     min-height: 100vh;
-    background-color: blue;
+    background-color: blueviolet;
 }
 
 .App {
@@ -24,6 +24,7 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 1rem 0.5rem;
+    
     
 }
 
@@ -36,12 +37,14 @@ section {
     justify-content: flex-start;
     padding: 1rem;
     background-color: rgba(0,0,0,0.4);
+    
 }
 
 form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
     flex-grow: 1;
     padding-bottom: 1rem;
 }

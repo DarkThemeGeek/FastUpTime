@@ -12,8 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 
 namespace FastUpTime.Controllers;
-[Route("/auth")]
+
 [ApiController]
+[Route("/auth")]
 public class AccountController : ControllerBase
 {
     private readonly UserDbContext _dbContext;
@@ -45,8 +46,8 @@ public class AccountController : ControllerBase
     }
 
 
-    [HttpPost]
-    [Route("/register")]
+    [HttpPost("/auth/register")]
+    //[Route("/register")]
     public async Task<IActionResult> Create([FromBody] UserAccount userAccount)
     {
         
@@ -113,13 +114,13 @@ public class AccountController : ControllerBase
     //     await _dbContext.SaveChangesAsync();
     //     return Ok();
     // }
-    [HttpGet("/denied")]
+    [HttpGet("/auth/denied")]
     public IActionResult Deny()
     {
         return Forbid();
     }
     [Authorize]
-    [HttpGet("me")]
+    [HttpGet("/auth/me")]
     public IActionResult Me()
     {
         return Ok(new
@@ -131,44 +132,66 @@ public class AccountController : ControllerBase
     }
     
     [HttpPost]
-    [Route("/login")]
-    public async Task<IActionResult> Login([FromBody] UserAccount userAccount)
+    [Route("/auth/login")]
+    public async Task<IActionResult> Login([FromBody] UserAccount login)
     {
-        if (userAccount.Id == 0 || string.IsNullOrWhiteSpace(userAccount.UserName) ||
-            string.IsNullOrWhiteSpace(userAccount.Password))
+        if (string.IsNullOrWhiteSpace(login.UserName) ||
+            string.IsNullOrWhiteSpace(login.Password))
         {
-            return BadRequest("Invalid Request");
+            return BadRequest("Invalid request");
         }
-        var hasher = new PasswordHasher<UserAccount>();
 
-        string hashPassword = hasher.HashPassword(
-            userAccount,
-            userAccount.Password
-        );
-        
-        var result=await _dbContext.UserAccounts.AnyAsync((acc) =>
-            acc.UserName == userAccount.UserName && acc.Password == userAccount.Password);
-        if (!result)
+        var user = await _dbContext.UserAccounts
+            .FirstOrDefaultAsync(x => x.UserName == login.UserName);
+
+        if (user == null)
         {
             return Unauthorized("Wrong username and/or password");
         }
+
+        var hasher = new PasswordHasher<UserAccount>();
+
+        var result = hasher.VerifyHashedPassword(
+            user,
+            user.Password,
+            login.Password
+        );
+
+        if (result == PasswordVerificationResult.Failed)
+        {
+            return Unauthorized("Wrong username and/or password");
+        }
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
-            new Claim(ClaimTypes.Name, userAccount.UserName),
-            new Claim(ClaimTypes.Role, userAccount.Role.ToString())
+            new Claim(
+                ClaimTypes.NameIdentifier,
+                user.Id.ToString()
+            ),
+
+            new Claim(
+                ClaimTypes.Name,
+                user.UserName
+            ),
+
+            new Claim(
+                ClaimTypes.Role,
+                user.Role.ToString()
+            )
         };
 
         var identity = new ClaimsIdentity(
             claims,
-            CookieAuthenticationDefaults.AuthenticationScheme);
+            CookieAuthenticationDefaults.AuthenticationScheme
+        );
 
         var principal = new ClaimsPrincipal(identity);
-        
-        await HttpContext.SignInAsync(   CookieAuthenticationDefaults.AuthenticationScheme,
-            principal);
-        
-        
-        return Ok("Logged in");
+
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal
+        );
+
+        return Ok();
     }
 }

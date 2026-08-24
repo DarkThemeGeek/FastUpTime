@@ -8,11 +8,11 @@ import axios from "axios";
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const REGISTER_URL = "https://localhost:8443/acc/auth/register";
+const REGISTER_URL = "https://localhost:8443/auth/register";
 
 
 function Register() {
-   
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -32,7 +32,7 @@ function Register() {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    
+
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -45,7 +45,7 @@ function Register() {
     //validating pwd
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
-        
+
         setValidPwd(result);
 
         const match = pwd === matchPwd
@@ -70,18 +70,20 @@ function Register() {
         try {
             const response = await axios.post(REGISTER_URL, {
                 UserName: user, Password: pwd
-                
+
             });
-            console.log(JSON.stringify(response));
+
+            console.log(response);
+
             setSuccess(true);
             //clear input fields
         } catch (err) {
-            if(!err?.response){
-                setErrMsg('No Server Response'+err?.respose.data);
-            }else if(err.response?.status === 409){
-                setErrMsg('UserName Taken'+err?.respose.data);
-            }else{
-                setErrMsg('Registration Failed'+err?.respose.data);
+            if (!err?.response) {
+                setErrMsg('No Server Response' + err?.respose?.data);
+            } else if (err.response?.status === 409) {
+                setErrMsg('UserName Taken' + err?.respose?.data);
+            } else {
+                setErrMsg('Registration Failed' + err?.respose?.data);
             }
             errRef.current.focus();
         }
@@ -89,7 +91,7 @@ function Register() {
 
     }
     return (
-        
+
         <>
             {success ? (
                 <section>
@@ -199,7 +201,7 @@ function Register() {
                     <p>
                         Already registered?<br/>
                         <span className={"line"}>
-                            <a href="#">Sign in</a>
+                            <a href="/">Sign in</a>
                 </span>
                     </p>
                 </section>

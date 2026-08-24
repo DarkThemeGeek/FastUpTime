@@ -2,8 +2,8 @@
   postgres_data:
   
 services:
-  backend:
-    image: backend
+  api:
+    image: api
     ports:
       - "8080:80"
       - "8443:443"

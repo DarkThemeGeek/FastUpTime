@@ -10,7 +10,7 @@ const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
-const LOGIN_URL = "https://localhost:8443/acc/auth/login";
+const LOGIN_URL = "https://localhost:8443/auth/login";
 
 
 function Login() {
@@ -39,14 +39,18 @@ function Login() {
             const response = await axios.post(LOGIN_URL, {
                 UserName: user,
                 Password: pwd
+                
             }, {headers: {"Content-Type": "application/json"}, withCredentials: true});
             console.log(response?.data)
             
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
+            
             SetAuth({user,pwd,roles,accessToken});
             SetUser('');
             setPwd('');
+            setSuccess(true);
+            
         } catch (err) {
             if(!err?.response){
                 setErrMsg('No server response');
@@ -65,7 +69,7 @@ function Login() {
         }
 
 
-        setSuccess(true);
+        
     }
     return (
 
@@ -109,7 +113,7 @@ function Login() {
                     <p>
                         Need and Account?<br/>
                         <span className={"line"}>
-                            <a href="#">Sign Up</a>
+                            <a href="/register">Sign Up</a>
                         </span>
                     </p>
                 </section>

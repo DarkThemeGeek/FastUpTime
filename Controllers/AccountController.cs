@@ -21,6 +21,7 @@ public class AccountController : ControllerBase
     public AccountController(UserDbContext dbContext) => _dbContext = dbContext;
 
     [HttpGet]
+    //[Authorize("Admin")]
     public async Task<List<UserAccount>> GetAll()
     {
         return await _dbContext.UserAccounts.ToListAsync();
@@ -47,6 +48,7 @@ public class AccountController : ControllerBase
 
 
     [HttpPost("/auth/register")]
+    [Authorize]
     //[Route("/register")]
     public async Task<IActionResult> Create([FromBody] UserAccount userAccount)
     {
@@ -79,6 +81,7 @@ public class AccountController : ControllerBase
  
 
     [HttpPut]
+    [Authorize]
     public async Task<IActionResult> Update([FromBody] UserAccount userAccount)
     {
         if (userAccount.Id == 0 || string.IsNullOrWhiteSpace(userAccount.UserName) ||
@@ -130,6 +133,7 @@ public class AccountController : ControllerBase
             role = User.FindFirstValue(ClaimTypes.Role)
         });
     }
+    
     
     [HttpPost]
     [Route("/auth/login")]

@@ -11,4 +11,5 @@ public class UserDbContext : DbContext
     }
 
     public DbSet<UserAccount> UserAccounts { get; set; }
+    public DbSet<Site> Sites { get; set; }
 }

@@ -10,12 +10,14 @@ public class UserAccount
 {
     [Key] 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("string")]
-    public  int Id { set; get; }
+    [Column("Id")]
+    public int Id { set; get; }
     [Column("user_name")]
     public required string UserName { set; get; } 
     [Column("password")]
     public required string Password { set; get; }
     [Column("role")]
     public Roles Role=Roles.User;
+    [Column("sites")] 
+    public List<long>? siteIDs;
 }

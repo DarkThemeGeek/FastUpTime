@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FastUpTime.Data;
 
-public class UserDbContext : DbContext
+public class AppDbContext : DbContext
 {
     
-    public UserDbContext(DbContextOptions options) : base(options)
+    public AppDbContext(DbContextOptions options) : base(options)
     {
     }
 

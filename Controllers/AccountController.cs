@@ -12,9 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 
 namespace FastUpTime.Controllers;
-
-[ApiController]
 [Route("/auth")]
+[ApiController]
 public class AccountController : ControllerBase
 {
     private readonly UserDbContext _dbContext;
@@ -48,8 +47,6 @@ public class AccountController : ControllerBase
 
 
     [HttpPost("/auth/register")]
-    [Authorize]
-    //[Route("/register")]
     public async Task<IActionResult> Create([FromBody] UserAccount userAccount)
     {
         
@@ -109,7 +106,7 @@ public class AccountController : ControllerBase
     // {
     //     var userAccount = await GetById(id);
     //     if (userAccount is null)
-    //     {
+    //     {-
     //         return NotFound();
     //     }
     //
@@ -136,6 +133,7 @@ public class AccountController : ControllerBase
     
     
     [HttpPost]
+    [AllowAnonymous]
     [Route("/auth/login")]
     public async Task<IActionResult> Login([FromBody] UserAccount login)
     {

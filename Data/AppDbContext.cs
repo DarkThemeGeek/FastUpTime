@@ -12,4 +12,5 @@ public class AppDbContext : DbContext
 
     public DbSet<UserAccount> UserAccounts { get; set; }
     public DbSet<Site> Sites { get; set; }
+    public DbSet<SitePing> SitePings { get; set; }
 }

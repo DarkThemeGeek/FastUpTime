@@ -5,10 +5,17 @@ namespace FastUpTime.Models;
 
 public class Site
 {
-    [Key] 
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
     public long Id { get; set; }
-    [Column("Url")]
+
+    [Column("Url")] 
     public string Url { get; set; }
+    
+    public bool IsUp { get; set; }
+    
+    public DateTime? LastPingAt { get; set; }
+    
+    public long? LastResponseTimeMs { get; set; }
 }

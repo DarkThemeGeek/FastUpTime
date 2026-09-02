@@ -97,7 +97,7 @@ function Register() {
                 <section>
                     <h1>Success!</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="/login">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -201,7 +201,7 @@ function Register() {
                     <p>
                         Already registered?<br/>
                         <span className={"line"}>
-                            <a href="/">Sign in</a>
+                            <a href="/login">Sign in</a>
                 </span>
                     </p>
                 </section>

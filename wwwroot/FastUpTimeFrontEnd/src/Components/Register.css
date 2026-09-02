@@ -1,4 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+    --bg: #080508;
+    --bg-secondary: #100810;
+    --surface: #160d16;
+    --surface-light: #211021;
+
+    --magenta: #d0008f;
+    --magenta-light: #ff32bd;
+    --magenta-dark: #8a005f;
+
+    --text: #f5eaf3;
+    --text-muted: #a895a5;
+
+    --border: #35152f;
+
+    --success: #50e6a0;
+    --error: #ff6685;
+}
+
+/* Reset */
 
 * {
     margin: 0;
@@ -6,39 +27,68 @@
     box-sizing: border-box;
 }
 
+/* Base */
+
 html {
     font-family: 'Nunito', sans-serif;
     font-size: 22px;
-    color: #fff;
+    color: var(--text);
 }
 
 body {
     min-height: 100vh;
-    background-color: blueviolet;
+
+    background:
+            radial-gradient(
+                    circle at 50% 0%,
+                    rgba(208, 0, 143, 0.15),
+                    transparent 40%
+            ),
+            var(--bg);
 }
+
+/* App */
 
 .App {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     min-height: 100vh;
+
     padding: 1rem 0.5rem;
-    
-    
 }
+
+/* Main sections / cards */
 
 section {
     width: 100%;
     max-width: 420px;
     min-height: 400px;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 1rem;
-    background-color: rgba(0,0,0,0.4);
-    
+
+    padding: 1.5rem;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(30, 15, 29, 0.97),
+                    rgba(13, 7, 13, 0.97)
+            );
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            0 0 35px rgba(208, 0, 143, 0.07);
 }
+
+/* Forms */
 
 form {
     display: flex;
@@ -46,12 +96,23 @@ form {
     justify-content: space-evenly;
 
     flex-grow: 1;
+
     padding-bottom: 1rem;
 }
 
-a, a:visited {
-    color: #fff;
+/* Links */
+
+a,
+a:visited {
+    color: var(--magenta-light);
+    transition: color 0.2s ease;
 }
+
+a:hover {
+    color: #ff70ce;
+}
+
+/* Inputs */
 
 input[type="text"],
 input[type="password"],
@@ -59,32 +120,124 @@ button,
 textarea {
     font-family: 'Nunito', sans-serif;
     font-size: 22px;
-    padding: 0.25rem;
+
+    padding: 0.5rem 0.65rem;
+
     border-radius: 0.5rem;
 }
 
-label,
-button {
-    margin-top: 1rem;
+input[type="text"],
+input[type="password"],
+textarea {
+    width: 100%;
+
+    background: #0c070c;
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    outline: none;
+
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
 }
 
-button {
-    padding: 0.5rem;
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background: #100910;
+
+    border-color: var(--magenta);
+
+    box-shadow:
+            0 0 0 2px rgba(208, 0, 143, 0.12),
+            0 0 18px rgba(208, 0, 143, 0.12);
 }
+
+input::placeholder,
+textarea::placeholder {
+    color: #665563;
+}
+
+/* Labels */
+
+label {
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Buttons */
+
+button {
+    margin-top: 1rem;
+
+    padding: 0.6rem;
+
+    background: var(--magenta);
+    color: white;
+
+    border: 1px solid var(--magenta);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+button:hover {
+    background: var(--magenta-light);
+    border-color: var(--magenta-light);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+            0 5px 20px rgba(208, 0, 143, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--magenta-light);
+    outline-offset: 2px;
+}
+
+/* Validation instructions */
 
 .instructions {
     font-size: 0.75rem;
+
     border-radius: 0.5rem;
-    background: #000;
-    color: #fff;
-    padding: 0.25rem;
+
+    background: #0c070c;
+    color: var(--text-muted);
+
+    border: 1px solid var(--border);
+
+    padding: 0.5rem;
+
     position: relative;
     bottom: -10px;
 }
 
 .instructions > svg {
     margin-right: 0.25rem;
+
+    color: var(--magenta-light);
 }
+
+/* Accessibility / utility classes */
 
 .offscreen {
     position: absolute;
@@ -95,24 +248,78 @@ button {
     display: none;
 }
 
+/* Validation */
+
 .valid {
-    color: limegreen;
+    color: var(--success);
     margin-left: 0.25rem;
 }
 
 .invalid {
-    color: red;
+    color: var(--error);
     margin-left: 0.25rem;
 }
 
+/* Error message */
+
 .errmsg {
-    background-color: lightpink;
-    color: firebrick;
-    font-weight: bold;
+    background: rgba(255, 56, 100, 0.08);
+
+    color: var(--error);
+
+    border: 1px solid rgba(255, 56, 100, 0.3);
+
+    border-radius: 0.5rem;
+
+    font-weight: 700;
+
     padding: 0.5rem;
+
     margin-bottom: 0.5rem;
 }
 
+/* Layout */
+
 .line {
     display: inline-block;
+}
+
+/* Optional heading styling */
+
+section h1,
+section h2 {
+    color: var(--text);
+
+    text-shadow:
+            0 0 15px rgba(255, 50, 189, 0.15);
+}
+
+/* Optional small text */
+
+section p {
+    color: var(--text-muted);
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    html {
+        font-size: 18px;
+    }
+
+    .App {
+        padding: 1rem;
+    }
+
+    section {
+        min-height: 380px;
+        padding: 1.25rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    button,
+    textarea {
+        font-size: 18px;
+    }
 }

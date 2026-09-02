@@ -5,6 +5,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AuthContext from "../context/AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -14,6 +15,7 @@ const LOGIN_URL = "https://localhost:8443/auth/login";
 
 
 function Login() {
+    const navigate = useNavigate();
     const {SetAuth} = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
@@ -43,15 +45,20 @@ function Login() {
             }, {headers: {"Content-Type": "application/json"}, withCredentials: true});
             console.log(response?.data)
             
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
             
-            SetAuth({user,pwd,roles,accessToken});
+       
             SetUser('');
             setPwd('');
             setSuccess(true);
-            
+            console.log("logged in");
+            navigate("/UpTimePage")
         } catch (err) {
+            // console.log("CATCH WAS TRIGGERED");
+            // console.log("error:", err);
+            // console.log("message:", err.message);
+            // console.log("response:", err.response);
+            // console.log("request:", err.request);
+
             if(!err?.response){
                 setErrMsg('No server response');
             }

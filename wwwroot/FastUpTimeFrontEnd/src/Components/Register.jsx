@@ -9,10 +9,10 @@ const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const REGISTER_URL = "https://localhost:8443/auth/register";
-
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-
+    const navigate=useNavigate();
     const userRef = useRef();
     const errRef = useRef();
 
@@ -74,8 +74,9 @@ function Register() {
             });
 
             console.log(response);
-
+        
             setSuccess(true);
+            navigate("/login");
             //clear input fields
         } catch (err) {
             if (!err?.response) {

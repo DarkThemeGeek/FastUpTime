@@ -2,8 +2,11 @@
 
 using FastUpTime.Controllers;
 using FastUpTime.Data;
+using FastUpTime.Services;
+using FastUpTime.Services.BackgroundServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,14 +22,14 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
+            
           
     });
   
-});
+}); 
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddDbContext<UserDbContext>(options =>
+
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection"));
 });
@@ -41,7 +44,7 @@ builder.Services
     {
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SameSite = SameSiteMode.None;
  
         options.LoginPath = "/acc/auth/login";
         options.AccessDeniedPath = "/acc/auth/denied";
@@ -68,22 +71,33 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ISiteMonitoringService, SiteMonitoringService>();
+
+builder.Services.AddHostedService<SitePingWorker>();
+
+
 
 
 app.UseHttpsRedirection();
 
+app.UseCors("Frontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("Frontend");
+
 
 app.MapControllers();
 //For Development
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
 app.Run();
+//dotnet ef migrations add nameOfUpdate
+//dotnet ef database update //update the db

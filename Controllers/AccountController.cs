@@ -16,8 +16,8 @@ namespace FastUpTime.Controllers;
 [ApiController]
 public class AccountController : ControllerBase
 {
-    private readonly UserDbContext _dbContext;
-    public AccountController(UserDbContext dbContext) => _dbContext = dbContext;
+    private readonly AppDbContext _dbContext;
+    public AccountController(AppDbContext dbContext) => _dbContext = dbContext;
 
     [HttpGet]
     //[Authorize("Admin")]
@@ -27,7 +27,7 @@ public class AccountController : ControllerBase
     }
 
 
-    public async Task<AccountResponse?> GetByIdResponse(int id)
+    public async Task<AccountResponse?> GetByIdResponse(long id)
     {
         var account = await _dbContext.UserAccounts.FirstOrDefaultAsync((account) => account.Id == id);
         if (account != null)
@@ -101,18 +101,6 @@ public class AccountController : ControllerBase
         return Ok();
     }
     
-    // [HttpDelete("{id:int}")]
-    // public async Task<IActionResult> Delete(int id)
-    // {
-    //     var userAccount = await GetById(id);
-    //     if (userAccount is null)
-    //     {-
-    //         return NotFound();
-    //     }
-    //
-    //     _dbContext.UserAccounts.Remove(userAccount);
-    //     await _dbContext.SaveChangesAsync();
-    //     return Ok();
     // }
     [HttpGet("/auth/denied")]
     public IActionResult Deny()

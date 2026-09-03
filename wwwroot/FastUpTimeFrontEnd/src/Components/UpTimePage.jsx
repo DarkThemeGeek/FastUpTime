@@ -1,6 +1,6 @@
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import "./ServerState.css"
 import api from "./api.jsx";
 import axios from "axios";
@@ -10,6 +10,12 @@ const GET_LAST_PING_FOR_SITES_URL = "https://localhost:8443/sites/get_last";
 const ADD_SITE_TO_ACCOUNT_URL = "https://localhost:8443/sites/add";
 const LOGGED_IN_CHECK_URL = "https://localhost:8443/auth/me";
 
+const ToReadbleDate=(date)=>{
+   return new Date(date).toLocaleString("en-GB", {
+        dateStyle: "short",
+        timeStyle: "short",
+    });
+}
 
 function UpTimePage() {
     const errRef = useRef();
@@ -35,7 +41,7 @@ function UpTimePage() {
 
                 }, {withCredentials: true}
             );
-
+          UpdateSites();
 
         } catch (err) {
             if (!err?.response) {
@@ -49,7 +55,7 @@ function UpTimePage() {
         }
 
     }
-    const UpdateSites = async () => {
+    const UpdateSites = useCallback( async () => {
 
         try {
             const respose = await axios.get(GET_LAST_PING_FOR_SITES_URL, {withCredentials: true})
@@ -67,24 +73,24 @@ function UpTimePage() {
                 setErrMsg('Gettin sites data Failed');
             }
         }
-    }
-
+    },[]);
+    
     useEffect(() => {
 
 
         setErrMsg('')
     }, [name, link]);
-
+    
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            UpdateSites()
-        }, 5000);
-        return () => clearInterval(intervalId);
-    }, []);
 
-    console.log("sites:", sites);
-    console.log("is array:", Array.isArray(sites))
+        UpdateSites();
+
+        const intervalId = setInterval(UpdateSites, 20000);
+
+        return () => clearInterval(intervalId);
+    }, [UpdateSites]);
+    
     return (
 
         <div className="page">
@@ -100,7 +106,7 @@ function UpTimePage() {
                     <thead>
                     <tr>
                         <th>Link</th>
-                        <th>Name</th>
+                        {/*<th>Name</th>*/}
                         <th>LastChecked</th>
                     </tr>
                     </thead>
@@ -130,8 +136,8 @@ function UpTimePage() {
                             <td>{site.url}</td>
                             <td>
                                 <label
-                                    className={site.pings[0].success ? "server-status online" : "server-status offline"}>
-                                    {site.pings[0].success ? `Server Online: ${site.pings[0].timestamp}` : `Server Offline: ${site.pings[0].timestamp}`}
+                                    className={site.pings[0]?.success ? "server-status online" : "server-status offline"}>
+                                    {site.pings[0]?.success ? `Server Online: ${ToReadbleDate(site.pings[0]?.timestamp)}` : `Server Offline: ${ToReadbleDate(site.pings[0]?.timestamp)}`}
                                 </label>
                             </td>
                         </tr>

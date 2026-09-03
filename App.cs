@@ -67,15 +67,17 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-
-builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ISiteMonitoringService, SiteMonitoringService>();
 
 builder.Services.AddHostedService<SitePingWorker>();
+
+
+builder.Services.AddHttpClient();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
 
 
 

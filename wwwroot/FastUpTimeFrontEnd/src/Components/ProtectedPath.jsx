@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                await api.get("/auth/me");
+                await axios.get("https://localhost:8443/auth/me");
                 setAuthenticated(true);
             } catch (error) {
                 setAuthenticated(false);

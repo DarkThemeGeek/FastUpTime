@@ -32,9 +32,9 @@ function App() {
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/UpTimePage"
                                element={
-                                   //<ProtectedPath>
+                                   <ProtectedPath>
                                        <UpTimePage/>
-                                   //<ProtectedPath>
+                                   </ProtectedPath>
                                }
 
                         />

@@ -1,7 +1,7 @@
 namespace FastUpTime.Models;
 
-public struct AccountResponse(int id, string accountName)
+public struct AccountResponse(long id, string accountName)
 {
-    public int Id { set; get; } = id;
+    public long Id { set; get; } = id;
     public string AccountName { set; get; } = accountName;
 }

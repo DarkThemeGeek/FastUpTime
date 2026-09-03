@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
@@ -8,16 +9,12 @@ namespace FastUpTime.Models;
 [Table("user_account")]
 public class UserAccount
 {
-    [Key] 
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("Id")]
-    public int Id { set; get; }
-    [Column("user_name")]
-    public required string UserName { set; get; } 
-    [Column("password")]
+    public long Id { set; get; }
+    public required string UserName { set; get; }
     public required string Password { set; get; }
-    [Column("role")]
-    public Roles Role=Roles.User;
-    [Column("sites")] 
-    public List<long>? siteIDs;
+    
+    public Roles Role = Roles.User;
+    public ICollection<UserAccountSite> Sites { get; set; } = new List<UserAccountSite>();
 }

@@ -12,10 +12,7 @@ public class Site
 
     [Column("Url")] 
     public string Url { get; set; }
-    
-    public bool IsUp { get; set; }
-    
-    public DateTime? LastPingAt { get; set; }
-    
-    public long? LastResponseTimeMs { get; set; }
+
+    public ICollection<SitePing> Pings { get; set; } = new List<SitePing>();
+    public ICollection<UserAccountSite> Accounts { get; set; } = new List<UserAccountSite>();
 }
